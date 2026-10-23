@@ -1,0 +1,224 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <meta name="description" content="Catalogue de produits avec commande directe via WhatsApp.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Catalogue Pro - Commande via WhatsApp">
+  <meta property="og:description" content="Découvrez nos produits et commandez facilement via WhatsApp.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800">
+  <meta property="og:site_name" content="Catalogue Pro">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col" x-data="catalog()" x-init="init()">
+
+  <!-- HEADER -->
+  <header class="border-b border-zinc-800 bg-zinc-900/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-lg">C</div>
+        <div>
+          <h1 class="font-bold text-lg">Catalogue Pro</h1>
+          <p class="text-xs text-zinc-400">Closing WhatsApp</p>
+        </div>
+      </a>
+
+      <button @click="cartOpen = true" class="relative bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-lg flex items-center gap-2 transition">
+        <span>🛒</span>
+        <span class="hidden sm:inline">Panier</span>
+        <span x-show="cart.length > 0" 
+              class="absolute -top-2 -right-2 bg-emerald-500 text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center" 
+              x-text="cart.length"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- FILTRES -->
+  <div class="max-w-7xl mx-auto px-4 py-6 w-full">
+    <div class="flex flex-wrap gap-2">
+      <button @click="selectedCategory = 'Tous'" 
+              :class="selectedCategory === 'Tous' ? 'bg-emerald-600 text-white' : 'bg-zinc-800 text-zinc-300'"
+              class="px-4 py-2 rounded-full text-sm font-medium transition">
+        Tous
+      </button>
+      <template x-for="cat in categories" :key="cat">
+        <button @click="selectedCategory = cat"
+                :class="selectedCategory === cat ? 'bg-emerald-600 text-white' : 'bg-zinc-800 text-zinc-300'"
+                class="px-4 py-2 rounded-full text-sm font-medium transition"
+                x-text="cat">
+        </button>
+      </template>
+    </div>
+  </div>
+
+  <!-- PRODUITS -->
+  <main class="max-w-7xl mx-auto px-4 pb-16 flex-1 w-full">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <template x-for="product in filteredProducts" :key="product.id">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-emerald-600/40 transition group">
+          <a :href="'produit.html?id=' + product.id" class="block">
+            <div class="aspect-square overflow-hidden bg-zinc-800">
+              <img :src="product.image" :alt="product.name" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+          </a>
+          <div class="p-4">
+            <p class="text-xs text-emerald-500 mb-1" x-text="product.category"></p>
+            <a :href="'produit.html?id=' + product.id" class="block">
+              <h3 class="font-semibold text-sm mb-1 line-clamp-2 hover:text-emerald-400 transition" x-text="product.name"></h3>
+            </a>
+            <p class="text-xs text-zinc-400 mb-3 line-clamp-2" x-text="product.description"></p>
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-emerald-400" x-text="formatPrice(product.price)"></span>
+              <button @click="addToCart(product)" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition">
+                + Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-zinc-800 bg-zinc-900 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center font-bold text-sm">C</div>
+        <div>
+          <p class="font-semibold text-sm">Catalogue Pro</p>
+          <p class="text-xs text-zinc-500">Tunnel de conversion WhatsApp</p>
+        </div>
+      </div>
+      <p class="text-xs text-zinc-500">© 2026 — Projet E-Business TP4</p>
+    </div>
+  </footer>
+
+  <!-- PANIER -->
+  <div x-show="cartOpen" x-cloak class="fixed inset-0 z-50 flex justify-end">
+    <div @click="cartOpen = false" class="absolute inset-0 bg-black/60"></div>
+    <div class="relative w-full max-w-md bg-zinc-900 h-full shadow-2xl flex flex-col">
+      <div class="p-5 border-b border-zinc-800 flex items-center justify-between">
+        <h2 class="font-bold text-lg">Votre panier</h2>
+        <button @click="cartOpen = false" class="text-zinc-400 hover:text-white text-2xl">×</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-5 space-y-4">
+        <template x-if="cart.length === 0">
+          <p class="text-zinc-500 text-center py-10">Votre panier est vide</p>
+        </template>
+        <template x-for="item in cart" :key="item.id">
+          <div class="flex gap-3 bg-zinc-800/50 p-3 rounded-lg">
+            <img :src="item.image" class="w-16 h-16 object-cover rounded">
+            <div class="flex-1">
+              <h4 class="text-sm font-medium" x-text="item.name"></h4>
+              <p class="text-emerald-400 text-sm" x-text="formatPrice(item.price)"></p>
+            </div>
+            <button @click="removeFromCart(item.id)" class="text-zinc-500 hover:text-red-400">🗑️</button>
+          </div>
+        </template>
+      </div>
+
+      <div class="p-5 border-t border-zinc-800 space-y-3">
+        <div class="flex justify-between font-bold text-lg">
+          <span>Total</span>
+          <span class="text-emerald-400" x-text="formatPrice(total)"></span>
+        </div>
+        <button @click="orderWhatsApp()" :disabled="cart.length === 0"
+                class="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white py-3 rounded-lg font-medium transition">
+          Commander via WhatsApp
+        </button>
+        <button @click="showEmailForm = true" :disabled="cart.length === 0"
+                class="w-full bg-zinc-700 hover:bg-zinc-600 disabled:opacity-40 text-white py-3 rounded-lg font-medium transition">
+          Laisser mon email
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE EMAIL -->
+  <div x-show="showEmailForm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div @click="showEmailForm = false" class="absolute inset-0 bg-black/70"></div>
+    <div class="relative bg-zinc-900 border border-zinc-700 rounded-xl p-6 w-full max-w-sm">
+      <h3 class="font-bold text-lg mb-4">Recevoir le récapitulatif</h3>
+      <input type="email" x-model="email" placeholder="Votre adresse email" 
+             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2.5 mb-4 focus:outline-none focus:border-emerald-500">
+      <button @click="sendEmailOrder()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-lg font-medium">
+        Envoyer
+      </button>
+    </div>
+  </div>
+ <script>
+    function catalog() {
+      return {
+        products: [
+          {id:1, name:"Souris sans fil Logitech M185", sku:"LOG-M185-BK", price:8500, category:"Électronique", description:"Souris sans fil fiable, autonomie longue durée.", image:"https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500"},
+          {id:2, name:"Clavier mécanique RGB Redragon", sku:"RDG-K552", price:28500, category:"Électronique", description:"Clavier mécanique rétroéclairé RGB.", image:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500"},
+          {id:3, name:"Écouteurs Bluetooth JBL Tune 510BT", sku:"JBL-510BT", price:19500, category:"Électronique", description:"Écouteurs supra-auriculaires, son JBL Pure Bass.", image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"},
+          {id:4, name:"Chaise de bureau ergonomique", sku:"CHR-ERG-01", price:45000, category:"Meubles", description:"Chaise confortable avec support lombaire.", image:"https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=500"},
+          {id:5, name:"Bureau compact en bois", sku:"BRU-WOOD-90", price:38500, category:"Meubles", description:"Bureau moderne 90x50 cm.", image:"https://images.unsplash.com/photo-1518455027359-f3f8164ba55c?w=500"},
+          {id:6, name:"Lampe de bureau LED", sku:"LMP-LED-01", price:12500, category:"Meubles", description:"Lampe LED ajustable, 3 modes.", image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500"},
+          {id:7, name:"Mixeur plongeant 3 en 1", sku:"MIX-3IN1", price:16500, category:"Cuisine", description:"Mixeur plongeant puissant.", image:"https://images.unsplash.com/photo-1585515320310-259814833e7e?w=500"},
+          {id:8, name:"Casserole antiadhésive 24cm", sku:"CAS-24", price:9800, category:"Cuisine", description:"Casserole antiadhésive compatible induction.", image:"https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500"},
+          {id:9, name:"Bouilloire électrique inox", sku:"BQL-INOX", price:11200, category:"Cuisine", description:"Bouilloire 1.7L en inox.", image:"https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500"},
+          {id:10, name:"T-shirt coton premium", sku:"TSH-COT-01", price:7500, category:"Vêtements", description:"T-shirt 100% coton, coupe moderne.", image:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"},
+          {id:11, name:"Jean slim stretch", sku:"JEA-SLIM", price:18500, category:"Vêtements", description:"Jean slim confortable.", image:"https://images.unsplash.com/photo-1542272454315-7f6b6b8c0b0b?w=500"},
+          {id:12, name:"Sneakers casual blanches", sku:"SNK-WHT", price:24500, category:"Vêtements", description:"Sneakers blanches polyvalentes.", image:"https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500"}
+        ],
+        cart: [],
+        cartOpen: false,
+        selectedCategory: 'Tous',
+        categories: [],
+        showEmailForm: false,
+        email: '',
+        whatsappNumber: '237651297036',
+
+        init() {
+          this.categories = [...new Set(this.products.map(p => p.category))];
+        },
+        get filteredProducts() {
+          if (this.selectedCategory === 'Tous') return this.products;
+          return this.products.filter(p => p.category === this.selectedCategory);
+        },
+        get total() {
+          return this.cart.reduce((sum, item) => sum + item.price, 0);
+        },
+        formatPrice(price) {
+          return new Intl.NumberFormat('fr-FR').format(price) + ' FCFA';
+        },
+        addToCart(product) {
+          this.cart.push({...product});
+          this.cartOpen = true;
+        },
+        removeFromCart(id) {
+          this.cart = this.cart.filter(item => item.id !== id);
+        },
+        orderWhatsApp() {
+          if (this.cart.length === 0) return;
+          let message = "Bonjour, je souhaite commander :\n\n";
+          this.cart.forEach(item => {
+            message += `• ${item.name} (${item.sku}) - ${this.formatPrice(item.price)}\n`;
+          });
+          message += `\nTotal : ${this.formatPrice(this.total)}`;
+          const url = `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(message)}`;
+          window.open(url, '_blank', 'noopener,noreferrer');
+        },
+        sendEmailOrder() {
+          if (!this.email) { alert("Veuillez entrer votre email"); return; }
+          alert("L'envoi des e-mails n'est pas configuré sur ce site.");
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "name": "Souris sans fil Logitech M185",
+    "sku": "LOG-M185-BK",
+    "price": 2500,
+    "category": "Électronique",
+    "description": "Souris sans fil fiable, autonomie longue durée, compatible Windows et macOS.",
+    "image": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500",
+    "stock": 25
+  },
+  {
+    "id": 2,
+    "name": "Clavier mécanique RGB Redragon",
+    "sku": "RDG-K552",
+    "price": 4500,
+    "category": "Électronique",
+    "description": "Clavier mécanique rétroéclairé RGB, switches bleus, très confortable pour le travail.",
+    "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
+    "stock": 12
+  },
+  {
+    "id": 3,
+    "name": "Écouteurs Bluetooth JBL Tune 510BT",
+    "sku": "JBL-510BT",
+    "price": 9500,
+    "category": "Électronique",
+    "description": "Écouteurs supra-auriculaires sans fil, son JBL Pure Bass, autonomie 40h.",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+    "stock": 18
+  },
+  {
+    "id": 4,
+    "name": "Chaise de bureau ergonomique",
+    "sku": "CHR-ERG-01",
+    "price": 15000,
+    "category": "Meubles",
+    "description": "Chaise de bureau confortable avec support lombaire et accoudoirs réglables.",
+    "image": "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=500",
+    "stock": 8
+  },
+  {
+    "id": 5,
+    "name": "Bureau compact en bois",
+    "sku": "BRU-WOOD-90",
+    "price": 15500,
+    "category": "Meubles",
+    "description": "Bureau moderne en bois, dimensions 90x50 cm, idéal pour petits espaces.",
+    "image": "https://images.unsplash.com/photo-1518455027359-f3f8164ba55c?w=500",
+    "stock": 6
+  },
+  {
+    "id": 6,
+    "name": "Lampe de bureau LED",
+    "sku": "LMP-LED-01",
+    "price": 3500,
+    "category": "Meubles",
+    "description": "Lampe LED ajustable, 3 modes d’éclairage, design minimaliste.",
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500",
+    "stock": 15
+  },
+  {
+    "id": 7,
+    "name": "Mixeur plongeant 3 en 1",
+    "sku": "MIX-3IN1",
+    "price": 16500,
+    "category": "Cuisine",
+    "description": "Mixeur plongeant puissant avec accessoires (fouet + hachoir).",
+    "image": "https://images.unsplash.com/photo-1585515320310-259814833e7e?w=500",
+    "stock": 14
+  },
+  {
+    "id": 8,
+    "name": "Casserole antiadhésive 24cm",
+    "sku": "CAS-24",
+    "price": 9800,
+    "category": "Cuisine",
+    "description": "Casserole antiadhésive de qualité, compatible tous feux y compris induction.",
+    "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500",
+    "stock": 20
+  },
+  {
+    "id": 9,
+    "name": "Bouilloire électrique inox",
+    "sku": "BQL-INOX",
+    "price": 11200,
+    "category": "Cuisine",
+    "description": "Bouilloire 1.7L en inox, arrêt automatique, design élégant.",
+    "image": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500",
+    "stock": 11
+  },
+  {
+    "id": 10,
+    "name": "T-shirt coton premium",
+    "sku": "TSH-COT-01",
+    "price": 7500,
+    "category": "Vêtements",
+    "description": "T-shirt 100% coton, coupe moderne, plusieurs couleurs disponibles.",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500",
+    "stock": 30
+  },
+  {
+    "id": 11,
+    "name": "Jean slim stretch",
+    "sku": "JEA-SLIM",
+    "price": 3500,
+    "category": "Vêtements",
+    "description": "Jean slim confortable avec stretch, coupe moderne.",
+    "image": "https://images.unsplash.com/photo-1542272454315-7f6b6b8c0b0b?w=500",
+    "stock": 16
+  },
+  {
+    "id": 12,
+    "name": "Sneakers casual blanches",
+    "sku": "SNK-WHT",
+    "price": 14500,
+    "category": "Vêtements",
+    "description": "Sneakers blanches polyvalentes, très confortables au quotidien.",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500",
+    "stock": 10
+  }
+]
